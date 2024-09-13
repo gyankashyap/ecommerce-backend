@@ -2,10 +2,10 @@ const dotenv = require('dotenv');
 const { Client } = require('pg');
 
 const dbClient = new Client({
-    host: process.env.DB_HOST,
     user: process.env.DB_USER,
-    port: process.env.DB_PORT,
     database: process.env.DB_NAME,
+    port: process.env.DB_PORT,
+    host: process.env.DB_HOST,
     password: process.env.DB_PASSWORD,
     ssl: {
         rejectUnauthorized: false,
