@@ -2,9 +2,9 @@
   "name": "ecommerce-app",
   "version": "1.0.0",
   "description": "An e-commerce application for buyers and sellers",
-  "main": "app.js",
+  "main": "src/app.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node src/app.js"
   },
   "author": "gyan kashyap",
   "license": "ISC",
