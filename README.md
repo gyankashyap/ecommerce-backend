@@ -17,60 +17,15 @@ This is a simple e-commerce application REST API built with Node.js, Express.js,
 - dotenv (for environment variables)
 - express-validator (for input validation)
 
-## Setup Instructions
-1. Clone the repository:
+# For testing the API:
 
-bash
-git clone <repository-url>
-cd ecommerce-app
+- As seller:
+{ "username": "seller1", "password": "password" }
 
-2. Install dependencies:
+- As buyer:
+{ "username": "buyer1", "password": "password" }
 
-bash
-npm install
-
-3. Set up the PostgreSQL database and create the necessary tables:
-
-- Install PostgreSQL and create a database named ecommerce.
-- Create tables for users, products, and carts.
-
-CREATE TABLE users (
-    id SERIAL PRIMARY KEY,
-    username VARCHAR(50) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    role VARCHAR(10) CHECK (role IN ('buyer', 'seller')) NOT NULL
-);
-
-CREATE TABLE products (
-    id SERIAL PRIMARY KEY,
-    seller_id INTEGER REFERENCES users(id),
-    name VARCHAR(100) NOT NULL,
-    category VARCHAR(50) NOT NULL,
-    description TEXT,
-    price DECIMAL(10, 2) NOT NULL,
-    discount DECIMAL(5, 2) DEFAULT 0
-);
-
-CREATE TABLE carts (
-    id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES users(id),
-    product_id INTEGER REFERENCES products(id)
-);
-
-4. Create a .env file in the root directory with the following content:
-
-DATABASE_URL=postgres://username:password@localhost:5432/ecommerce
-JWT_SECRET=your_jwt_secret
-
-5. Start the server:
-
-bash
-node src/server.js
-
-6. Use Postman or similar tools to test the API endpoints.
-
-
-# Here are some example requests:
+# Here are the API endpoints:
 
 ## User Authentication
 
@@ -78,9 +33,13 @@ node src/server.js
 POST /api/auth/signup
 Body: { "username": "seller1", "password": "password", "role": "seller" }
 
-- Login:
+- Login as seller:
 POST /api/auth/login
 Body: { "username": "seller1", "password": "password" }
+
+- Login as buyer:
+POST /api/auth/login
+Body: { "username": "buyer1", "password": "password" }
 
 ## Seller Operations
 
@@ -114,3 +73,57 @@ Body: { "productId": 1 }
 Get Cart:
 GET /api/cart
 Headers: { "Authorization": "Bearer <token>" }
+
+## Setup Instructions
+1. Clone the repository:
+
+git clone https://github.com/gyankashyap/ecommerce-backend.git
+cd ecommerce-app
+
+2. Install dependencies:
+
+npm install
+
+3. Set up the PostgreSQL database and create the necessary tables:
+
+- Install PostgreSQL and create a database named ecommerce.
+- Create tables for users, products, and carts.
+
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    role VARCHAR(10) CHECK (role IN ('buyer', 'seller')) NOT NULL
+);
+
+CREATE TABLE products (
+    id SERIAL PRIMARY KEY,
+    seller_id INTEGER REFERENCES users(id),
+    name VARCHAR(100) NOT NULL,
+    category VARCHAR(50) NOT NULL,
+    description TEXT,
+    price DECIMAL(10, 2) NOT NULL,
+    discount DECIMAL(5, 2) DEFAULT 0
+);
+
+CREATE TABLE carts (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id),
+    product_id INTEGER REFERENCES products(id)
+);
+
+4. Create a .env file in the root directory with the following content:
+
+DB_HOST=your_db_host
+DB_USER=your_db_username
+DB_PORT=5432
+DB_NAME=your_db_name
+DB_PASSWORD=your_db_password
+JWT_SECRET=your_jwt_secret
+
+5. Start the server:
+
+node src/app.js
+
+6. Use Postman or similar tools to test the API endpoints.
+
