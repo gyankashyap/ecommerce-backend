@@ -24,6 +24,10 @@ exports.removeFromCart = async (req, res) => {
 
 exports.getCart = async (req, res) => {
     const userId = req.user.id;
-    const cartItems = await Cart.getCart(userId);
-    res.json(cartItems);
+    try {
+        const cartItems = await Cart.getCart(userId);
+        res.json(cartItems);
+    } catch (error) {
+        res.status(400).json({ error: 'Error getting cart items' });
+    }
 };

@@ -14,11 +14,16 @@ exports.signup = async (req, res) => {
 
 exports.login = async (req, res) => {
     const { username, password } = req.body;
-    const user = await User.findByUsername(username);
-    if (user && await bcrypt.compare(password, user.password)) {
-        const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        res.json({ message: 'Login successful', token });
-    } else {
-        res.status(401).json({ error: 'Invalid credentials' });
+    try {
+        const user = await User.findByUsername(username);
+        if (user && await bcrypt.compare(password, user.password)) {
+            const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
+            res.json({ message: 'Login successful', token });
+        } else {
+            res.status(401).json({ error: 'Invalid credentials' });
+        }
+    } catch (err) {
+        console.error('Error logging in user', err);
+        throw err;
     }
 };

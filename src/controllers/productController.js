@@ -35,6 +35,11 @@ exports.deleteProduct = async (req, res) => {
 };
 
 exports.getProducts = async (req, res) => {
-    const products = await Product.findAll();
-    res.json(products);
+    try {
+        const products = await Product.findAll();
+        res.json(products);
+    } catch (error) {
+        res.status(400).json({ error: 'Error getting products' });
+    }
+
 };
